@@ -23,11 +23,8 @@ body{
 
 overflow:hidden;
 
+width:100vw;
 height:100vh;
-
-display:flex;
-justify-content:center;
-align-items:center;
 
 background:
 radial-gradient(
@@ -39,22 +36,22 @@ rgba(0,120,255,.15),
 font-family:Arial,sans-serif;
 }
 
-/* ---------------- */
-/* BOOT SCREEN */
-/* ---------------- */
+/* =======================
+BOOT SCREEN
+======================= */
 
 #bootScreen{
 
 position:fixed;
 inset:0;
 
-background:black;
+background:#000;
 
 display:flex;
 justify-content:center;
 align-items:center;
 
-z-index:999;
+z-index:9999;
 }
 
 #bootText{
@@ -67,22 +64,36 @@ letter-spacing:4px;
 
 text-shadow:
 0 0 10px #00d4ff,
-0 0 25px #00d4ff;
+0 0 20px #00d4ff,
+0 0 40px #00d4ff;
 }
+
+/* =======================
+MAIN UI
+======================= */
 
 #mainUI{
+
 display:none;
+
+position:fixed;
+
+inset:0;
+
+width:100vw;
+height:100vh;
 }
 
-/* ---------------- */
-/* CLOCK */
-/* ---------------- */
+/* =======================
+CLOCK
+======================= */
 
 .clock{
 
 position:absolute;
 
 top:80px;
+left:0;
 
 width:100%;
 
@@ -99,41 +110,16 @@ text-shadow:
 0 0 20px #00d4ff;
 }
 
-/* ---------------- */
-/* STATUS */
-/* ---------------- */
+/* =======================
+STATUS
+======================= */
 
-.status{.hud-line{
-
-position:absolute;
-
-top:50%;
-
-left:0;
-
-width:100%;
-
-height:1px;
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-#00d4ff,
-transparent
-);
-
-opacity:.4;
-
-box-shadow:
-0 0 10px #00d4ff;
-}
-
+.status{
 
 position:absolute;
 
 top:130px;
+left:0;
 
 width:100%;
 
@@ -148,9 +134,37 @@ letter-spacing:3px;
 opacity:.8;
 }
 
-/* ---------------- */
-/* CORE */
-/* ---------------- */
+/* =======================
+HUD LINE
+======================= */
+
+.hud-line{
+
+position:absolute;
+
+left:0;
+top:50%;
+
+width:100%;
+height:1px;
+
+background:
+linear-gradient(
+90deg,
+transparent,
+#00d4ff,
+transparent
+);
+
+opacity:.4;
+
+box-shadow:
+0 0 10px #00d4ff;
+}
+
+/* =======================
+CORE
+======================= */
 
 .core{
 
@@ -159,22 +173,21 @@ position:absolute;
 left:50%;
 top:50%;
 
-width:180px;
-height:180px;
-
-margin-left:-90px;
-margin-top:-90px;
+transform:
+translate(-50%,-50%)
+scale(0);
 
 opacity:0;
 
-transform:scale(0);
+width:180px;
+height:180px;
 
 border-radius:50%;
 
 background:
 radial-gradient(
 circle,
-rgba(0,212,255,.9),
+rgba(0,212,255,.95),
 rgba(0,80,180,.2)
 );
 
@@ -182,13 +195,11 @@ box-shadow:
 0 0 20px #00d4ff,
 0 0 50px #00d4ff,
 0 0 100px #00d4ff;
-
 }
 
-
-/* ---------------- */
-/* RINGS */
-/* ---------------- */
+/* =======================
+RINGS
+======================= */
 
 .ring{
 
@@ -197,15 +208,53 @@ position:absolute;
 left:50%;
 top:50%;
 
-translate:-50% -50%;
+transform:
+translate(-50%,-50%);
 
 border-radius:50%;
 }
 
+.ring1{
 
-/* ---------------- */
-/* PARTICLES */
-/* ---------------- */
+width:340px;
+height:340px;
+
+opacity:0;
+
+border-top:2px solid #00d4ff;
+border-bottom:2px solid #00d4ff;
+
+filter:
+drop-shadow(0 0 15px #00d4ff);
+}
+
+.ring2{
+
+width:280px;
+height:280px;
+
+opacity:0;
+
+border-left:2px solid #00d4ff;
+border-right:2px solid #00d4ff;
+
+filter:
+drop-shadow(0 0 10px #00d4ff);
+}
+
+.ring3{
+
+width:230px;
+height:230px;
+
+opacity:0;
+
+border:1px solid rgba(0,212,255,.3);
+}
+
+/* =======================
+PARTICLES
+======================= */
 
 .particle{
 
@@ -229,6 +278,7 @@ float linear infinite;
 @keyframes float{
 
 0%{
+
 transform:
 translateY(0)
 scale(.5);
@@ -245,6 +295,7 @@ opacity:1;
 }
 
 100%{
+
 transform:
 translateY(-250px)
 scale(1.5);
@@ -254,9 +305,9 @@ opacity:0;
 
 }
 
-/* ---------------- */
-/* CORE BOOT */
-/* ---------------- */
+/* =======================
+CORE BOOT
+======================= */
 
 .core-online{
 
@@ -268,25 +319,40 @@ pulse 2s ease-in-out infinite .8s;
 @keyframes coreBoot{
 
 0%{
+
 opacity:0;
-transform:scale(0);
+
+transform:
+translate(-50%,-50%)
+scale(0);
+
 }
 
 60%{
+
 opacity:1;
-transform:scale(1.2);
+
+transform:
+translate(-50%,-50%)
+scale(1.2);
+
 }
 
 100%{
+
 opacity:1;
-transform:scale(1);
-}
+
+transform:
+translate(-50%,-50%)
+scale(1);
 
 }
 
-/* ---------------- */
-/* RING BOOT */
-/* ---------------- */
+}
+
+/* =======================
+RING BOOT
+======================= */
 
 .ring1.ring-online{
 
@@ -312,32 +378,48 @@ spin3 20s linear infinite .8s;
 @keyframes ringBoot{
 
 0%{
+
 opacity:0;
-transform:scale(0);
+
+transform:
+translate(-50%,-50%)
+scale(0);
+
 }
 
 70%{
+
 opacity:1;
-transform:scale(1.15);
+
+transform:
+translate(-50%,-50%)
+scale(1.15);
+
 }
 
 100%{
+
 opacity:1;
-transform:scale(1);
-}
+
+transform:
+translate(-50%,-50%)
+scale(1);
 
 }
 
+}
 @keyframes spin1{
 
 from{
 transform:
+translate(-50%,-50%)
 rotateX(75deg)
 rotate(0deg);
 }
 
 to{
 transform:
+translate(-50%,-50%)
 rotateX(75deg)
 rotate(360deg);
 }
@@ -348,12 +430,14 @@ rotate(360deg);
 
 from{
 transform:
+translate(-50%,-50%)
 rotateY(75deg)
 rotate(0deg);
 }
 
 to{
 transform:
+translate(-50%,-50%)
 rotateY(75deg)
 rotate(360deg);
 }
@@ -363,11 +447,15 @@ rotate(360deg);
 @keyframes spin3{
 
 from{
-transform:rotate(0deg);
+transform:
+translate(-50%,-50%)
+rotate(0deg);
 }
 
 to{
-transform:rotate(360deg);
+transform:
+translate(-50%,-50%)
+rotate(360deg);
 }
 
 }
@@ -375,18 +463,25 @@ transform:rotate(360deg);
 @keyframes pulse{
 
 0%{
-transform:scale(1);
+transform:
+translate(-50%,-50%)
+scale(1);
 }
 
 50%{
-transform:scale(1.08);
+transform:
+translate(-50%,-50%)
+scale(1.08);
 }
 
 100%{
-transform:scale(1);
+transform:
+translate(-50%,-50%)
+scale(1);
 }
 
 }
+
 </style>
 
 </head>
@@ -410,6 +505,8 @@ WELCOME KAIYA
 <div class="status">
 ORION SYSTEM ONLINE
 </div>
+
+<div class="hud-line"></div>
 
 <div class="ring ring1"></div>
 <div class="ring ring2"></div>
@@ -453,13 +550,13 @@ const p=document.createElement("div");
 
 p.className="particle";
 
-p.style.left=
+p.style.left =
 Math.random()*100+"vw";
 
-p.style.top=
+p.style.top =
 Math.random()*100+"vh";
 
-p.style.animationDuration=
+p.style.animationDuration =
 (5+Math.random()*10)+"s";
 
 document.body.appendChild(p);
@@ -506,13 +603,13 @@ bootScreen.style.display =
 mainUI.style.display =
 "block";
 
-/* コア展開 */
+/* コア起動 */
 
 document
 .querySelector(".core")
 .classList.add("core-online");
 
-/* リング順次展開 */
+/* リング展開 */
 
 setTimeout(()=>{
 
