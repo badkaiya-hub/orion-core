@@ -1,32 +1,46 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ORION CORE</title>
 
-<style>
+
+
+ORION CORE
+
+
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 body{
-margin:0;
+
 overflow:hidden;
+
 height:100vh;
 
 display:flex;
 justify-content:center;
 align-items:center;
 
-background:#000;
+background:
+radial-gradient(circle at center,
+rgba(0,120,255,.15),
+#000 60%);
+
 font-family:Arial,sans-serif;
 }
 
 /* 時計 */
+
 .clock{
+
 position:absolute;
+
 top:80px;
 
 width:100%;
+
 text-align:center;
 
 color:#00d4ff;
@@ -40,12 +54,16 @@ text-shadow:
 0 0 20px #00d4ff;
 }
 
-/* 状態表示 */
+/* ステータス */
+
 .status{
+
 position:absolute;
+
 top:130px;
 
 width:100%;
+
 text-align:center;
 
 color:#00d4ff;
@@ -54,28 +72,94 @@ font-size:14px;
 
 letter-spacing:3px;
 
-opacity:0.8;
+opacity:.8;
 }
 
 /* コア */
+
 .core{
 
-width:220px;
-height:220px;
+position:absolute;
+
+width:180px;
+height:180px;
 
 border-radius:50%;
 
-border:4px solid #00d4ff;
+background:
+radial-gradient(circle,
+rgba(0,212,255,.9),
+rgba(0,80,180,.2));
 
 box-shadow:
 0 0 20px #00d4ff,
-0 0 40px #00d4ff,
-0 0 80px #00d4ff;
+0 0 50px #00d4ff,
+0 0 100px #00d4ff;
 
-animation:pulse 2s infinite;
+animation:
+pulse 2s ease-in-out infinite;
 }
 
-/* 脈動 */
+/* リング共通 */
+
+.ring{
+
+position:absolute;
+
+border-radius:50%;
+}
+
+/* リング1 */
+
+.ring1{
+
+width:340px;
+height:340px;
+
+border-top:2px solid #00d4ff;
+border-bottom:2px solid #00d4ff;
+
+transform-style:preserve-3d;
+
+animation:
+spin1 10s linear infinite;
+
+filter:drop-shadow(0 0 12px #00d4ff);
+}
+
+/* リング2 */
+
+.ring2{
+
+width:280px;
+height:280px;
+
+border-left:2px solid #00d4ff;
+border-right:2px solid #00d4ff;
+
+opacity:.7;
+
+animation:
+spin2 6s linear infinite reverse;
+
+filter:drop-shadow(0 0 10px #00d4ff);
+}
+
+/* リング3 */
+
+.ring3{
+
+width:230px;
+height:230px;
+
+border:1px solid rgba(0,212,255,.3);
+
+animation:
+spin3 20s linear infinite;
+}
+
+/* コア脈動 */
+
 @keyframes pulse{
 
 0%{
@@ -83,7 +167,7 @@ transform:scale(1);
 }
 
 50%{
-transform:scale(1.12);
+transform:scale(1.1);
 }
 
 100%{
@@ -92,42 +176,14 @@ transform:scale(1);
 
 }
 
-</style>
-</head>
+/* 外側リング */
 
-<body>
+@keyframes spin1{
 
-<div class="clock" id="clock">
-00:00:00
-</div>
-
-<div class="status">
-ORION SYSTEM ONLINE
-</div>
-
-<div class="core"></div>
-
-<script>
-
-function updateClock(){
-
-const now = new Date();
-
-const h = String(now.getHours()).padStart(2,"0");
-const m = String(now.getMinutes()).padStart(2,"0");
-const s = String(now.getSeconds()).padStart(2,"0");
-
-document.getElementById("clock").innerText =
-`${h}:${m}:${s}`;
-
+from{
+transform:
+rotateX(75deg)
+rotate(0deg);
 }
 
-updateClock();
-
-setInterval(updateClock,1000);
-
-</script>
-
-</body>
-</html>
-
+to{
