@@ -1,11 +1,17 @@
 <!DOCTYPE html>
+<html lang="ja">
 
+<head>
 
+<meta charset="UTF-8">
 
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
 
-ORION CORE
+<title>ORION CORE</title>
 
-
+<style>
 
 *{
 margin:0;
@@ -24,14 +30,53 @@ justify-content:center;
 align-items:center;
 
 background:
-radial-gradient(circle at center,
+radial-gradient(
+circle at center,
 rgba(0,120,255,.15),
-#000 60%);
+#000 60%
+);
 
 font-family:Arial,sans-serif;
 }
 
-/* 時計 */
+/* ---------------- */
+/* BOOT SCREEN */
+/* ---------------- */
+
+#bootScreen{
+
+position:fixed;
+inset:0;
+
+background:black;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+z-index:999;
+}
+
+#bootText{
+
+color:#00d4ff;
+
+font-size:30px;
+
+letter-spacing:4px;
+
+text-shadow:
+0 0 10px #00d4ff,
+0 0 25px #00d4ff;
+}
+
+#mainUI{
+display:none;
+}
+
+/* ---------------- */
+/* CLOCK */
+/* ---------------- */
 
 .clock{
 
@@ -54,7 +99,9 @@ text-shadow:
 0 0 20px #00d4ff;
 }
 
-/* ステータス */
+/* ---------------- */
+/* STATUS */
+/* ---------------- */
 
 .status{
 
@@ -75,7 +122,9 @@ letter-spacing:3px;
 opacity:.8;
 }
 
-/* コア */
+/* ---------------- */
+/* CORE */
+/* ---------------- */
 
 .core{
 
@@ -84,99 +133,196 @@ position:absolute;
 width:180px;
 height:180px;
 
+opacity:0;
+
+transform:scale(0);
+
 border-radius:50%;
 
 background:
-radial-gradient(circle,
+radial-gradient(
+circle,
 rgba(0,212,255,.9),
-rgba(0,80,180,.2));
+rgba(0,80,180,.2)
+);
 
 box-shadow:
 0 0 20px #00d4ff,
 0 0 50px #00d4ff,
 0 0 100px #00d4ff;
 
-animation:
-pulse 2s ease-in-out infinite;
 }
-
-/* リング共通 */
+/* ---------------- */
+/* RINGS */
+/* ---------------- */
 
 .ring{
-
 position:absolute;
-
 border-radius:50%;
 }
-
-/* リング1 */
 
 .ring1{
 
 width:340px;
 height:340px;
 
+opacity:0;
+
 border-top:2px solid #00d4ff;
 border-bottom:2px solid #00d4ff;
 
-transform-style:preserve-3d;
-
-animation:
-spin1 10s linear infinite;
-
-filter:drop-shadow(0 0 12px #00d4ff);
+filter:
+drop-shadow(0 0 15px #00d4ff);
 }
-
-/* リング2 */
 
 .ring2{
 
 width:280px;
 height:280px;
 
+opacity:0;
+
 border-left:2px solid #00d4ff;
 border-right:2px solid #00d4ff;
 
-opacity:.7;
-
-animation:
-spin2 6s linear infinite reverse;
-
-filter:drop-shadow(0 0 10px #00d4ff);
+filter:
+drop-shadow(0 0 10px #00d4ff);
 }
-
-/* リング3 */
 
 .ring3{
 
 width:230px;
 height:230px;
 
+opacity:0;
+
 border:1px solid rgba(0,212,255,.3);
+}
+
+/* ---------------- */
+/* PARTICLES */
+/* ---------------- */
+
+.particle{
+
+position:absolute;
+
+width:3px;
+height:3px;
+
+background:#00d4ff;
+
+border-radius:50%;
+
+box-shadow:
+0 0 10px #00d4ff,
+0 0 20px #00d4ff;
 
 animation:
-spin3 20s linear infinite;
+float linear infinite;
 }
 
-/* コア脈動 */
-
-@keyframes pulse{
+@keyframes float{
 
 0%{
-transform:scale(1);
+transform:
+translateY(0)
+scale(.5);
+
+opacity:0;
 }
 
-50%{
-transform:scale(1.1);
+10%{
+opacity:1;
+}
+
+90%{
+opacity:1;
 }
 
 100%{
+transform:
+translateY(-250px)
+scale(1.5);
+
+opacity:0;
+}
+
+}
+
+/* ---------------- */
+/* CORE BOOT */
+/* ---------------- */
+
+.core-online{
+
+animation:
+coreBoot .8s ease-out forwards,
+pulse 2s ease-in-out infinite .8s;
+}
+
+@keyframes coreBoot{
+
+0%{
+opacity:0;
+transform:scale(0);
+}
+
+60%{
+opacity:1;
+transform:scale(1.2);
+}
+
+100%{
+opacity:1;
 transform:scale(1);
 }
 
 }
 
-/* 外側リング */
+/* ---------------- */
+/* RING BOOT */
+/* ---------------- */
+
+.ring1.ring-online{
+
+animation:
+ringBoot .8s ease-out forwards,
+spin1 10s linear infinite .8s;
+}
+
+.ring2.ring-online{
+
+animation:
+ringBoot .8s ease-out forwards,
+spin2 6s linear infinite .8s reverse;
+}
+
+.ring3.ring-online{
+
+animation:
+ringBoot .8s ease-out forwards,
+spin3 20s linear infinite .8s;
+}
+
+@keyframes ringBoot{
+
+0%{
+opacity:0;
+transform:scale(0);
+}
+
+70%{
+opacity:1;
+transform:scale(1.15);
+}
+
+100%{
+opacity:1;
+transform:scale(1);
+}
+
+}
 
 @keyframes spin1{
 
@@ -187,3 +333,210 @@ rotate(0deg);
 }
 
 to{
+transform:
+rotateX(75deg)
+rotate(360deg);
+}
+
+}
+
+@keyframes spin2{
+
+from{
+transform:
+rotateY(75deg)
+rotate(0deg);
+}
+
+to{
+transform:
+rotateY(75deg)
+rotate(360deg);
+}
+
+}
+
+@keyframes spin3{
+
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.08);
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="bootScreen">
+
+<div id="bootText">
+WELCOME KAIYA
+</div>
+
+</div>
+
+<div id="mainUI">
+
+<div class="clock" id="clock">
+00:00:00
+</div>
+
+<div class="status">
+ORION SYSTEM ONLINE
+</div>
+
+<div class="ring ring1"></div>
+<div class="ring ring2"></div>
+<div class="ring ring3"></div>
+
+<div class="core"></div>
+
+</div>
+
+<script>
+
+/* 時計 */
+
+function updateClock(){
+
+const now = new Date();
+
+const h =
+String(now.getHours()).padStart(2,"0");
+
+const m =
+String(now.getMinutes()).padStart(2,"0");
+
+const s =
+String(now.getSeconds()).padStart(2,"0");
+
+document.getElementById("clock").innerText =
+`${h}:${m}:${s}`;
+
+}
+
+updateClock();
+
+setInterval(updateClock,1000);
+
+/* 粒子生成 */
+
+for(let i=0;i<80;i++){
+
+const p=document.createElement("div");
+
+p.className="particle";
+
+p.style.left=
+Math.random()*100+"vw";
+
+p.style.top=
+Math.random()*100+"vh";
+
+p.style.animationDuration=
+(5+Math.random()*10)+"s";
+
+document.body.appendChild(p);
+
+}
+
+/* 起動シーケンス */
+
+const bootText =
+document.getElementById("bootText");
+
+const bootScreen =
+document.getElementById("bootScreen");
+
+const mainUI =
+document.getElementById("mainUI");
+
+setTimeout(()=>{
+
+bootText.innerText =
+"INITIALIZING...";
+
+},1500);
+
+setTimeout(()=>{
+
+bootText.innerText =
+"SYSTEM CHECK...";
+
+},3000);
+
+setTimeout(()=>{
+
+bootText.innerText =
+"ORION ONLINE";
+
+},4500);
+
+setTimeout(()=>{
+
+bootScreen.style.display =
+"none";
+
+mainUI.style.display =
+"block";
+
+/* コア展開 */
+
+document
+.querySelector(".core")
+.classList.add("core-online");
+
+/* リング順次展開 */
+
+setTimeout(()=>{
+
+document
+.querySelector(".ring3")
+.classList.add("ring-online");
+
+},300);
+
+setTimeout(()=>{
+
+document
+.querySelector(".ring2")
+.classList.add("ring-online");
+
+},800);
+
+setTimeout(()=>{
+
+document
+.querySelector(".ring1")
+.classList.add("ring-online");
+
+},1300);
+
+},6000);
+
+</script>
+
+</body>
+</html>
