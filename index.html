@@ -1,204 +1,183 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>ORION CORE</title>
 
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 body{
+  overflow:hidden;
+  height:100vh;
+  width:100vw;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 
-overflow:hidden;
+  background:
+  radial-gradient(
+    circle at center,
+    rgba(0,120,255,.15),
+    #000 60%
+  );
 
-width:100vw;
-height:100vh;
-
-background:
-radial-gradient(
-circle at center,
-rgba(0,120,255,.15),
-#000 60%
-);
-
-font-family:Arial,sans-serif;
+  font-family:Arial,sans-serif;
 }
 
-/* =======================
-BOOT SCREEN
-======================= */
-
-#bootScreen{
-
-position:fixed;
-inset:0;
-
-background:#000;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-z-index:9999;
-}
-
-#bootText{
-
-color:#00d4ff;
-
-font-size:30px;
-
-letter-spacing:4px;
-
-text-shadow:
-0 0 10px #00d4ff,
-0 0 20px #00d4ff,
-0 0 40px #00d4ff;
-}
-
-/* =======================
-MAIN UI
-======================= */
-
-#mainUI{
-
-display:none;
-
-position:fixed;
-
-inset:0;
-
-width:100vw;
-height:100vh;
-}
-
-/* =======================
-CLOCK
-======================= */
+/* 時計 */
 
 .clock{
+  position:absolute;
+  top:80px;
+  width:100%;
 
-position:absolute;
+  text-align:center;
 
-top:80px;
-left:0;
+  color:#00d4ff;
 
-width:100%;
+  font-size:32px;
 
-text-align:center;
+  letter-spacing:4px;
 
-color:#00d4ff;
-
-font-size:32px;
-
-letter-spacing:4px;
-
-text-shadow:
-0 0 10px #00d4ff,
-0 0 20px #00d4ff;
+  text-shadow:
+  0 0 10px #00d4ff,
+  0 0 20px #00d4ff,
+  0 0 40px #00d4ff;
 }
 
-/* =======================
-STATUS
-======================= */
+/* ステータス */
 
 .status{
+  position:absolute;
 
-position:absolute;
+  top:130px;
 
-top:130px;
-left:0;
+  width:100%;
 
-width:100%;
+  text-align:center;
 
-text-align:center;
+  color:#00d4ff;
 
-color:#00d4ff;
+  font-size:14px;
 
-font-size:14px;
+  letter-spacing:3px;
 
-letter-spacing:3px;
-
-opacity:.8;
+  opacity:.8;
 }
 
-/* =======================
-HUD LINE
-======================= */
 
-.hud-line{
-
-position:absolute;
-
-left:0;
-top:50%;
-
-width:100%;
-height:1px;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-#00d4ff,
-transparent
-);
-
-opacity:.4;
-
-box-shadow:
-0 0 10px #00d4ff;
-}
-
-/* =======================
-CORE
-======================= */
+/* コア */
 
 .core{
+  position:absolute;
 
-position:absolute;
+  width:180px;
+  height:180px;
 
-left:50%;
-top:50%;
+  border-radius:50%;
 
-transform:
-translate(-50%,-50%)
-scale(0);
+  background:
+  radial-gradient(
+    circle,
+    rgba(0,212,255,.9),
+    rgba(0,80,180,.2)
+  );
 
-opacity:0;
+  box-shadow:
+  0 0 20px #00d4ff,
+  0 0 50px #00d4ff,
+  0 0 100px #00d4ff;
 
-width:180px;
-height:180px;
-
-border-radius:50%;
-
-background:
-radial-gradient(
-circle,
-rgba(0,212,255,.95),
-rgba(0,80,180,.2)
-);
-
-box-shadow:
-0 0 20px #00d4ff,
-0 0 50px #00d4ff,
-0 0 100px #00d4ff;
+  animation:pulse 2s ease-in-out infinite;
 }
 
+
+/* 共通リング */
+
+.ring{
+  position:absolute;
+  border-radius:50%;
+}
+
+
+/* 外側リング */
+
+.ring1{
+  width:340px;
+  height:340px;
+
+  border-top:2px solid #00d4ff;
+  border-bottom:2px solid #00d4ff;
+
+  transform-style:preserve-3d;
+
+  animation:spin1 10s linear infinite;
+
+  filter:
+  drop-shadow(0 0 12px #00d4ff);
+}
+
+
+/* 中リング */
+
+.ring2{
+  width:280px;
+  height:280px;
+
+  border-left:2px solid #00d4ff;
+  border-right:2px solid #00d4ff;
+
+  opacity:.7;
+
+  animation:
+  spin2 6s linear infinite reverse;
+
+  filter:
+  drop-shadow(0 0 10px #00d4ff);
+}
+
+
+/* 内リング */
+
+.ring3{
+  width:230px;
+  height:230px;
+
+  border:
+  1px solid rgba(0,212,255,.3);
+
+  animation:
+  spin3 20s linear infinite;
+}
+
+
+/* パーティクル */
+
+.particle{
+  position:absolute;
+
+  width:4px;
+  height:4px;
+
+  border-radius:50%;
+
+  background:#00d4ff;
+
+  box-shadow:
+  0 0 10px #00d4ff;
+
+  opacity:.8;
+}
 /* =======================
-RINGS
+3D RINGS
 ======================= */
 
 .ring{
@@ -208,99 +187,143 @@ position:absolute;
 left:50%;
 top:50%;
 
+border-radius:50%;
+
 transform:
 translate(-50%,-50%);
 
-border-radius:50%;
+pointer-events:none;
+
+z-index:5;
 }
+
+/* OUTER */
 
 .ring1{
 
-width:340px;
-height:340px;
+width:360px;
+height:360px;
 
 opacity:0;
 
-border-top:2px solid #00d4ff;
-border-bottom:2px solid #00d4ff;
+border-top:4px solid #00d4ff;
+border-bottom:4px solid #00d4ff;
 
-filter:
-drop-shadow(0 0 15px #00d4ff);
+box-shadow:
+0 0 10px #00d4ff,
+0 0 30px #00d4ff;
+
 }
+
+/* MIDDLE */
 
 .ring2{
 
-width:280px;
-height:280px;
+width:300px;
+height:300px;
 
 opacity:0;
 
-border-left:2px solid #00d4ff;
-border-right:2px solid #00d4ff;
-
-filter:
-drop-shadow(0 0 10px #00d4ff);
-}
-
-.ring3{
-
-width:230px;
-height:230px;
-
-opacity:0;
-
-border:1px solid rgba(0,212,255,.3);
-}
-
-/* =======================
-PARTICLES
-======================= */
-
-.particle{
-
-position:absolute;
-
-width:3px;
-height:3px;
-
-background:#00d4ff;
-
-border-radius:50%;
+border-left:4px solid #00d4ff;
+border-right:4px solid #00d4ff;
 
 box-shadow:
 0 0 10px #00d4ff,
 0 0 20px #00d4ff;
-
-animation:
-float linear infinite;
 }
 
-@keyframes float{
+/* INNER */
 
-0%{
+.ring3{
 
-transform:
-translateY(0)
-scale(.5);
+width:240px;
+height:240px;
 
 opacity:0;
+
+border:2px solid rgba(0,212,255,.4);
+
+box-shadow:
+0 0 8px #00d4ff;
+}
+/* =======================
+RING ROTATION
+======================= */
+
+@keyframes spin1{
+
+from{
+transform:
+translate(-50%,-50%)
+rotateX(75deg)
+rotate(0deg);
 }
 
-10%{
-opacity:1;
+to{
+transform:
+translate(-50%,-50%)
+rotateX(75deg)
+rotate(360deg);
 }
 
-90%{
-opacity:1;
+}
+
+@keyframes spin2{
+
+from{
+transform:
+translate(-50%,-50%)
+rotateY(75deg)
+rotate(0deg);
+}
+
+to{
+transform:
+translate(-50%,-50%)
+rotateY(75deg)
+rotate(360deg);
+}
+
+}
+
+@keyframes spin3{
+
+from{
+transform:
+translate(-50%,-50%)
+rotate(0deg);
+}
+
+to{
+transform:
+translate(-50%,-50%)
+rotate(360deg);
+}
+
+}
+
+/* =======================
+CORE PULSE
+======================= */
+
+@keyframes pulse{
+
+0%{
+transform:
+translate(-50%,-50%)
+scale(1);
+}
+
+50%{
+transform:
+translate(-50%,-50%)
+scale(1.08);
 }
 
 100%{
-
 transform:
-translateY(-250px)
-scale(1.5);
-
-opacity:0;
+translate(-50%,-50%)
+scale(1);
 }
 
 }
@@ -408,80 +431,6 @@ scale(1);
 }
 
 }
-@keyframes spin1{
-
-from{
-transform:
-translate(-50%,-50%)
-rotateX(75deg)
-rotate(0deg);
-}
-
-to{
-transform:
-translate(-50%,-50%)
-rotateX(75deg)
-rotate(360deg);
-}
-
-}
-
-@keyframes spin2{
-
-from{
-transform:
-translate(-50%,-50%)
-rotateY(75deg)
-rotate(0deg);
-}
-
-to{
-transform:
-translate(-50%,-50%)
-rotateY(75deg)
-rotate(360deg);
-}
-
-}
-
-@keyframes spin3{
-
-from{
-transform:
-translate(-50%,-50%)
-rotate(0deg);
-}
-
-to{
-transform:
-translate(-50%,-50%)
-rotate(360deg);
-}
-
-}
-
-@keyframes pulse{
-
-0%{
-transform:
-translate(-50%,-50%)
-scale(1);
-}
-
-50%{
-transform:
-translate(-50%,-50%)
-scale(1.08);
-}
-
-100%{
-transform:
-translate(-50%,-50%)
-scale(1);
-}
-
-}
-
 </style>
 
 </head>
@@ -518,8 +467,6 @@ ORION SYSTEM ONLINE
 
 <script>
 
-/* 時計 */
-
 function updateClock(){
 
 const now = new Date();
@@ -533,7 +480,7 @@ String(now.getMinutes()).padStart(2,"0");
 const s =
 String(now.getSeconds()).padStart(2,"0");
 
-document.getElementById("clock").innerText =
+document.getElementById("clock").textContent =
 `${h}:${m}:${s}`;
 
 }
@@ -563,7 +510,7 @@ document.body.appendChild(p);
 
 }
 
-/* 起動シーケンス */
+/* 起動演出 */
 
 const bootText =
 document.getElementById("bootText");
@@ -576,21 +523,21 @@ document.getElementById("mainUI");
 
 setTimeout(()=>{
 
-bootText.innerText =
+bootText.textContent =
 "INITIALIZING...";
 
 },1500);
 
 setTimeout(()=>{
 
-bootText.innerText =
+bootText.textContent =
 "SYSTEM CHECK...";
 
 },3000);
 
 setTimeout(()=>{
 
-bootText.innerText =
+bootText.textContent =
 "ORION ONLINE";
 
 },4500);
@@ -603,13 +550,9 @@ bootScreen.style.display =
 mainUI.style.display =
 "block";
 
-/* コア起動 */
-
 document
 .querySelector(".core")
 .classList.add("core-online");
-
-/* リング展開 */
 
 setTimeout(()=>{
 
@@ -641,3 +584,4 @@ document
 
 </body>
 </html>
+
