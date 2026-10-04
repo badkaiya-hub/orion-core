@@ -7,8 +7,7 @@
 
 <meta
 name="viewport"
-content="width=device-width,
-initial-scale=1.0">
+content="width=device-width,initial-scale=1.0">
 
 <title>ORION CORE</title>
 
@@ -20,25 +19,28 @@ padding:0;
 box-sizing:border-box;
 }
 
-html,
 body{
 
-width:100%;
-height:100%;
+width:100vw;
+height:100vh;
 
 overflow:hidden;
 
-background:#000;
+background:
+radial-gradient(
+circle at center,
+rgba(0,120,255,.15),
+#000 65%
+);
 
 font-family:
 Arial,
 sans-serif;
-
 }
 
-/* ====================
-BOOT
-==================== */
+/* =======================
+BOOT SCREEN
+======================= */
 
 #bootScreen{
 
@@ -49,9 +51,7 @@ inset:0;
 background:#000;
 
 display:flex;
-
 justify-content:center;
-
 align-items:center;
 
 z-index:9999;
@@ -63,21 +63,17 @@ color:#00d4ff;
 
 font-size:30px;
 
-letter-spacing:5px;
+letter-spacing:4px;
 
 text-shadow:
-
 0 0 10px #00d4ff,
-
-0 0 25px #00d4ff,
-
-0 0 50px #00d4ff;
-
+0 0 20px #00d4ff,
+0 0 40px #00d4ff;
 }
 
-/* ====================
+/* =======================
 MAIN UI
-==================== */
+======================= */
 
 #mainUI{
 
@@ -91,15 +87,15 @@ width:100vw;
 height:100vh;
 }
 
-/* ====================
+/* =======================
 CLOCK
-==================== */
+======================= */
 
 .clock{
 
 position:absolute;
 
-top:60px;
+top:70px;
 
 width:100%;
 
@@ -109,25 +105,22 @@ color:#00d4ff;
 
 font-size:32px;
 
-letter-spacing:6px;
+letter-spacing:4px;
 
 text-shadow:
-
 0 0 10px #00d4ff,
-
 0 0 20px #00d4ff;
-
 }
 
-/* ====================
+/* =======================
 STATUS
-==================== */
+======================= */
 
 .status{
 
 position:absolute;
 
-top:110px;
+top:120px;
 
 width:100%;
 
@@ -140,24 +133,26 @@ font-size:13px;
 letter-spacing:3px;
 
 opacity:.8;
+
+text-shadow:
+0 0 10px #00d4ff;
 }
 
-/* ====================
-HUD
-==================== */
+/* =======================
+HUD LINES
+======================= */
 
-.hud-line-x{
+.hud-horizontal{
 
 position:absolute;
 
+left:0;
 top:50%;
 
 width:100%;
-
 height:1px;
 
 background:
-
 linear-gradient(
 90deg,
 transparent,
@@ -168,18 +163,17 @@ transparent
 opacity:.3;
 }
 
-.hud-line-y{
+.hud-vertical{
 
 position:absolute;
 
 left:50%;
+top:0;
 
 width:1px;
-
 height:100%;
 
 background:
-
 linear-gradient(
 180deg,
 transparent,
@@ -187,7 +181,7 @@ transparent,
 transparent
 );
 
-opacity:.3;
+opacity:.15;
 }
 /* ====================
 CORE
@@ -356,10 +350,8 @@ CORE BOOT
 .core-online{
 
 animation:
-
 coreBoot .8s ease-out forwards,
-
-pulse 2.5s ease-in-out infinite .8s;
+pulse 2.2s ease-in-out infinite .8s;
 }
 
 @keyframes coreBoot{
@@ -380,7 +372,7 @@ opacity:1;
 
 transform:
 translate(-50%,-50%)
-scale(1.2);
+scale(1.25);
 
 }
 
@@ -403,27 +395,21 @@ RING BOOT
 .ring1.ring-online{
 
 animation:
-
 ringBoot .8s ease-out forwards,
-
 spin1 12s linear infinite .8s;
 }
 
 .ring2.ring-online{
 
 animation:
-
 ringBoot .8s ease-out forwards,
-
-spin2 8s linear infinite .8s reverse;
+spin2 8s linear infinite reverse .8s;
 }
 
 .ring3.ring-online{
 
 animation:
-
 ringBoot .8s ease-out forwards,
-
 spin3 20s linear infinite .8s;
 }
 
@@ -530,7 +516,7 @@ rotate(360deg);
 }
 
 /* ====================
-PULSE
+CORE PULSE
 ==================== */
 
 @keyframes pulse{
@@ -564,6 +550,10 @@ scale(1);
 </style>
 
 </head>
+</style>
+
+</head>
+
 <body>
 
 <div id="bootScreen">
@@ -584,10 +574,8 @@ WELCOME KAIYA
 ORION SYSTEM ONLINE
 </div>
 
-<div class="hud-line-x"></div>
-<div class="hud-line-y"></div>
-
-<div class="scan"></div>
+<div class="hud-horizontal"></div>
+<div class="hud-vertical"></div>
 
 <div class="ring ring1"></div>
 <div class="ring ring2"></div>
@@ -599,124 +587,102 @@ ORION SYSTEM ONLINE
 
 <script>
 
-/* ====================
-CLOCK
-==================== */
+/* 時計 */
 
 function updateClock(){
 
-const now = new Date();
-
-const h =
-String(now.getHours()).padStart(2,"0");
-
-const m =
-String(now.getMinutes()).padStart(2,"0");
-
-const s =
-String(now.getSeconds()).padStart(2,"0");
+const time=
+new Date().toLocaleTimeString(
+"ja-JP",
+{
+hour12:false,
+timeZone:"Asia/Tokyo"
+}
+);
 
 document
 .getElementById("clock")
-.textContent =
-`${h}:${m}:${s}`;
+.textContent=time;
 
 }
 
 updateClock();
+setInterval(updateClock,1000);
 
-setInterval(
-updateClock,
-1000
-);
+/* 粒子 */
 
-/* ====================
-PARTICLES
-==================== */
+for(let i=0;i<80;i++){
 
-for(let i=0;i<60;i++){
-
-const p =
+const p=
 document.createElement("div");
 
-p.className =
+p.className=
 "particle";
 
-p.style.left =
+p.style.left=
 Math.random()*100+"vw";
 
-p.style.top =
+p.style.top=
 Math.random()*100+"vh";
 
-p.style.animationDuration =
-(5+Math.random()*8)+"s";
+p.style.animationDuration=
+(5+Math.random()*10)+"s";
 
-document
-.body
-.appendChild(p);
+document.body.appendChild(p);
 
 }
 
-/* ====================
-BOOT
-==================== */
+/* 起動シーケンス */
 
-const bootText =
-document
-.getElementById(
+const bootText=
+document.getElementById(
 "bootText"
 );
 
-const bootScreen =
-document
-.getElementById(
+const bootScreen=
+document.getElementById(
 "bootScreen"
 );
 
-const mainUI =
-document
-.getElementById(
+const mainUI=
+document.getElementById(
 "mainUI"
 );
 
 setTimeout(()=>{
 
-bootText.textContent =
+bootText.textContent=
 "INITIALIZING...";
 
 },1500);
 
 setTimeout(()=>{
 
-bootText.textContent =
+bootText.textContent=
 "SYSTEM CHECK...";
 
 },3000);
 
 setTimeout(()=>{
 
-bootText.textContent =
+bootText.textContent=
 "ORION ONLINE";
 
 },4500);
 
 setTimeout(()=>{
 
-bootScreen.style.display =
+bootScreen.style.display=
 "none";
 
-mainUI.style.display =
+mainUI.style.display=
 "block";
-
-/* CORE */
 
 document
 .querySelector(".core")
 .classList.add(
 "core-online"
 );
-
-/* RINGS */
 
 setTimeout(()=>{
 
@@ -736,7 +702,7 @@ document
 "ring-online"
 );
 
-},700);
+},800);
 
 setTimeout(()=>{
 
@@ -746,11 +712,104 @@ document
 "ring-online"
 );
 
-},1100);
+},1300);
 
 },6000);
+
+/* 音量反応 */
+
+navigator
+.mediaDevices
+.getUserMedia({
+audio:true
+})
+.then(stream=>{
+
+const audioContext=
+new AudioContext();
+
+const analyser=
+audioContext.createAnalyser();
+
+const source=
+audioContext
+.createMediaStreamSource(
+stream
+);
+
+source.connect(
+analyser
+);
+
+analyser.fftSize=256;
+
+const data=
+new Uint8Array(
+analyser.frequencyBinCount
+);
+
+function audioLoop(){
+
+requestAnimationFrame(
+audioLoop
+);
+
+analyser
+.getByteFrequencyData(
+data
+);
+
+let volume=0;
+
+for(
+let i=0;
+i<data.length;
+i++
+){
+volume+=data[i];
+}
+
+volume=
+volume/data.length;
+
+const glow=
+10+volume*0.6;
+
+document
+.querySelector(".ring1")
+.style.boxShadow=
+`0 0 ${glow}px #00d4ff,
+0 0 ${glow*2}px #00d4ff`;
+
+document
+.querySelector(".ring2")
+.style.boxShadow=
+`0 0 ${glow}px #00d4ff,
+0 0 ${glow*1.5}px #00d4ff`;
+
+document
+.querySelector(".core")
+.style.boxShadow=
+`0 0 ${glow}px #00d4ff,
+0 0 ${glow*3}px #00d4ff,
+0 0 ${glow*5}px rgba(0,212,255,.8)`;
+
+}
+
+audioLoop();
+
+})
+.catch(error=>{
+
+console.log(
+"Microphone Error",
+error
+);
+
+});
 
 </script>
 
 </body>
+
 </html>
