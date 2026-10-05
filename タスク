@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Task Core</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    radial-gradient(circle at center,
+    #12315e 0%,
+    #081224 40%,
+    #030712 100%);
+
+    color:#d6f7ff;
+}
+
+.container{
+    width:500px;
+    max-width:90%;
+
+    padding:25px;
+
+    border:1px solid #00d4ff;
+
+    background:rgba(0,20,40,.55);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:20px;
+
+    box-shadow:
+    0 0 15px #00d4ff,
+    inset 0 0 10px rgba(0,212,255,.2);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:10px;
+
+    color:#00d4ff;
+
+    text-shadow:
+    0 0 10px #00d4ff,
+    0 0 20px #00d4ff;
+}
+
+.status{
+    text-align:center;
+    margin-bottom:20px;
+    color:#8cecff;
+}
+
+.input-area{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+
+    background:#04111f;
+
+    border:1px solid #00d4ff;
+
+    color:white;
+
+    padding:12px;
+    border-radius:10px;
+}
+
+input:focus{
+    outline:none;
+
+    box-shadow:
+    0 0 10px #00d4ff;
+}
+
+button{
+    padding:12px 18px;
+
+    background:transparent;
+
+    border:1px solid #00d4ff;
+
+    color:#00d4ff;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+button:hover{
+    background:#00d4ff;
+    color:#000;
+}
+
+ul{
+    list-style:none;
+}
+
+li{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:12px;
+
+    margin-bottom:10px;
+
+    background:rgba(255,255,255,.04);
+
+    border-left:4px solid #00d4ff;
+
+    border-radius:8px;
+
+    animation:fadeIn .3s ease;
+}
+
+.task-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.completed{
+    text-decoration:line-through;
+    opacity:.5;
+}
+
+.delete-btn{
+    border-color:#ff4d6d;
+    color:#ff4d6d;
+}
+
+.delete-btn:hover{
+    background:#ff4d6d;
+    color:white;
+}
+
+.progress{
+    margin-bottom:20px;
+    text-align:center;
+    color:#00d4ff;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>TASK CORE</h1>
+
+    <div class="status">SYSTEM ONLINE</div>
+
+    <div class="progress" id="progress">
+        Progress : 0%
+    </div>
+
+    <div class="input-area">
+        <input
+        type="text"
+        id="taskInput"
+        placeholder="タスクを入力">
+        <button onclick="addTask()">
+            ADD
+        </button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+</div>
+
+<script>
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function saveTasks(){
+    localStorage.setItem(
+        "tasks",
+        JSON.stringify(tasks)
+    );
+}
+
+function updateProgress(){
+
+    if(tasks.length === 0){
+        document.getElementById("progress").textContent =
+        "Progress : 0%";
+        return;
+    }
+
+    const completed =
+    tasks.filter(task => task.completed).length;
+
+    const percent =
+    Math.round((completed / tasks.length) * 100);
+
+    document.getElementById("progress").textContent =
+    `Progress : ${percent}%`;
+}
+
+function renderTasks(){
+
+    const taskList =
+    document.getElementById("taskList");
+
+    taskList.innerHTML = "";
+
+    tasks.forEach((task,index)=>{
+
+        const li =
+        document.createElement("li");
+
+        li.innerHTML =
+        `
+        <div class="task-left">
+
+            <input
+            type="checkbox"
+            ${task.completed ? "checked" : ""}
+            onchange="toggleTask(${index})">
+
+            <span class="${
+                task.completed ? "completed" : ""
+            }">
+                ${task.text}
+            </span>
+
+        </div>
+
+        <button
+        class="delete-btn"
+        onclick="deleteTask(${index})">
+            DELETE
+        </button>
+        `;
+
+        taskList.appendChild(li);
+    });
+
+    updateProgress();
+}
+
+function addTask(){
+
+    const input =
+    document.getElementById("taskInput");
+
+    const text =
+    input.value.trim();
+
+    if(text === "") return;
+
+    tasks.push({
+        text:text,
+        completed:false
+    });
+
+    saveTasks();
+    renderTasks();
+
+    input.value = "";
+}
+
+function toggleTask(index){
+
+    tasks[index].completed =
+    !tasks[index].completed;
+
+    saveTasks();
+    renderTasks();
+}
+
+function deleteTask(index){
+
+    tasks.splice(index,1);
+
+    saveTasks();
+    renderTasks();
+}
+
+document
+.getElementById("taskInput")
+.addEventListener("keypress",(e)=>{
+
+    if(e.key==="Enter"){
+        addTask();
+    }
+
+});
+
+renderTasks();
+
+</script>
+
+</body>
+</html>
