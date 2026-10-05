@@ -7,7 +7,8 @@
 
 <meta
 name="viewport"
-content="width=device-width,initial-scale=1.0">
+content="width=device-width,
+initial-scale=1.0">
 
 <title>ORION CORE</title>
 
@@ -19,65 +20,26 @@ padding:0;
 box-sizing:border-box;
 }
 
+html,
 body{
 
-width:100vw;
-height:100vh;
+width:100%;
+height:100%;
 
 overflow:hidden;
 
-background:
-radial-gradient(
-circle at center,
-rgba(0,120,255,.15),
-#000 65%
-);
-
-font-family:
-Arial,
-sans-serif;
-}
-
-/* =======================
-BOOT SCREEN
-======================= */
-
-#bootScreen{
-
-position:fixed;
-
-inset:0;
-
 background:#000;
 
-display:flex;
-justify-content:center;
-align-items:center;
+font-family:
+Arial,sans-serif;
 
-z-index:9999;
 }
 
-#bootText{
-
-color:#00d4ff;
-
-font-size:30px;
-
-letter-spacing:4px;
-
-text-shadow:
-0 0 10px #00d4ff,
-0 0 20px #00d4ff,
-0 0 40px #00d4ff;
-}
-
-/* =======================
+/* ====================
 MAIN UI
-======================= */
+==================== */
 
 #mainUI{
-
-display:none;
 
 position:fixed;
 
@@ -87,15 +49,15 @@ width:100vw;
 height:100vh;
 }
 
-/* =======================
+/* ====================
 CLOCK
-======================= */
+==================== */
 
 .clock{
 
 position:absolute;
 
-top:70px;
+top:50px;
 
 width:100%;
 
@@ -103,24 +65,26 @@ text-align:center;
 
 color:#00d4ff;
 
-font-size:32px;
+font-size:30px;
 
-letter-spacing:4px;
+letter-spacing:5px;
 
 text-shadow:
+
 0 0 10px #00d4ff,
+
 0 0 20px #00d4ff;
 }
 
-/* =======================
+/* ====================
 STATUS
-======================= */
+==================== */
 
 .status{
 
 position:absolute;
 
-top:120px;
+top:95px;
 
 width:100%;
 
@@ -133,26 +97,24 @@ font-size:13px;
 letter-spacing:3px;
 
 opacity:.8;
-
-text-shadow:
-0 0 10px #00d4ff;
 }
 
-/* =======================
-HUD LINES
-======================= */
+/* ====================
+HUD
+==================== */
 
-.hud-horizontal{
+.hud-line-x{
 
 position:absolute;
 
-left:0;
 top:50%;
 
 width:100%;
+
 height:1px;
 
 background:
+
 linear-gradient(
 90deg,
 transparent,
@@ -160,20 +122,21 @@ transparent,
 transparent
 );
 
-opacity:.3;
+opacity:.25;
 }
 
-.hud-vertical{
+.hud-line-y{
 
 position:absolute;
 
 left:50%;
-top:0;
 
 width:1px;
+
 height:100%;
 
 background:
+
 linear-gradient(
 180deg,
 transparent,
@@ -181,7 +144,7 @@ transparent,
 transparent
 );
 
-opacity:.15;
+opacity:.25;
 }
 /* ====================
 CORE
@@ -280,6 +243,112 @@ border:
 }
 
 /* ====================
+CHAT PANEL
+==================== */
+
+.chat-panel{
+
+position:absolute;
+
+bottom:100px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+width:90%;
+
+max-width:500px;
+
+height:140px;
+
+border:
+
+1px solid
+rgba(0,212,255,.3);
+
+background:
+
+rgba(0,20,40,.4);
+
+backdrop-filter:
+blur(8px);
+
+overflow:auto;
+
+padding:12px;
+
+color:#00d4ff;
+
+font-size:14px;
+
+box-shadow:
+0 0 20px
+rgba(0,212,255,.2);
+}
+
+/* ====================
+INPUT
+==================== */
+
+.input-area{
+
+position:absolute;
+
+bottom:30px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+width:90%;
+
+max-width:500px;
+
+display:flex;
+
+gap:10px;
+}
+
+.input-area input{
+
+flex:1;
+
+padding:10px;
+
+background:
+rgba(0,20,40,.8);
+
+border:
+
+1px solid
+#00d4ff;
+
+color:#00d4ff;
+
+outline:none;
+}
+
+.input-area button{
+
+padding:10px 18px;
+
+background:
+rgba(0,120,255,.3);
+
+border:
+
+1px solid
+#00d4ff;
+
+color:#00d4ff;
+
+cursor:pointer;
+}
+
+/* ====================
 PARTICLES
 ==================== */
 
@@ -302,47 +371,6 @@ box-shadow:
 
 opacity:.8;
 }
-
-/* ====================
-SCAN LINE
-==================== */
-
-.scan{
-
-position:absolute;
-
-left:0;
-
-width:100%;
-
-height:2px;
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-#00d4ff,
-transparent
-);
-
-opacity:.35;
-
-animation:
-scanMove 5s linear infinite;
-}
-
-@keyframes scanMove{
-
-0%{
-top:0%;
-}
-
-100%{
-top:100%;
-}
-
-}
 /* ====================
 CORE BOOT
 ==================== */
@@ -352,6 +380,7 @@ CORE BOOT
 animation:
 coreBoot .8s ease-out forwards,
 pulse 2.2s ease-in-out infinite .8s;
+
 }
 
 @keyframes coreBoot{
@@ -397,6 +426,7 @@ RING BOOT
 animation:
 ringBoot .8s ease-out forwards,
 spin1 12s linear infinite .8s;
+
 }
 
 .ring2.ring-online{
@@ -404,6 +434,7 @@ spin1 12s linear infinite .8s;
 animation:
 ringBoot .8s ease-out forwards,
 spin2 8s linear infinite reverse .8s;
+
 }
 
 .ring3.ring-online{
@@ -411,6 +442,7 @@ spin2 8s linear infinite reverse .8s;
 animation:
 ringBoot .8s ease-out forwards,
 spin3 20s linear infinite .8s;
+
 }
 
 @keyframes ringBoot{
@@ -516,7 +548,7 @@ rotate(360deg);
 }
 
 /* ====================
-CORE PULSE
+PULSE
 ==================== */
 
 @keyframes pulse{
@@ -547,6 +579,55 @@ scale(1);
 
 }
 
+/* ====================
+CHAT EFFECT
+==================== */
+
+.message{
+
+margin-bottom:10px;
+
+padding:8px;
+
+border-left:
+2px solid #00d4ff;
+
+background:
+rgba(0,120,255,.08);
+
+}
+
+.you{
+
+color:#8fdcff;
+
+}
+
+.orion{
+
+color:#00d4ff;
+
+}
+
+/* API応答中 */
+
+.typing{
+
+animation:
+blink 1s infinite;
+
+}
+
+@keyframes blink{
+
+50%{
+
+opacity:.3;
+
+}
+
+}
+
 </style>
 
 </head>
@@ -555,14 +636,6 @@ scale(1);
 </head>
 
 <body>
-
-<div id="bootScreen">
-
-<div id="bootText">
-WELCOME KAIYA
-</div>
-
-</div>
 
 <div id="mainUI">
 
@@ -574,8 +647,8 @@ WELCOME KAIYA
 ORION SYSTEM ONLINE
 </div>
 
-<div class="hud-horizontal"></div>
-<div class="hud-vertical"></div>
+<div class="hud-line-x"></div>
+<div class="hud-line-y"></div>
 
 <div class="ring ring1"></div>
 <div class="ring ring2"></div>
@@ -583,100 +656,91 @@ ORION SYSTEM ONLINE
 
 <div class="core"></div>
 
+<!-- CHAT -->
+
+<div id="chatPanel" class="chat-panel">
+
+<div class="message orion">
+ORION >
+待機中...
+</div>
+
+</div>
+
+<div class="input-area">
+
+<input
+id="userInput"
+type="text"
+placeholder="ORIONへ入力..."
+>
+
+<button onclick="askAI()">
+送信
+</button>
+
+</div>
+
 </div>
 
 <script>
 
-/* 時計 */
+/* ====================
+CLOCK
+==================== */
 
 function updateClock(){
 
-const time=
-new Date().toLocaleTimeString(
-"ja-JP",
-{
-hour12:false,
-timeZone:"Asia/Tokyo"
-}
-);
+const now = new Date();
+
+const h =
+String(now.getHours()).padStart(2,"0");
+
+const m =
+String(now.getMinutes()).padStart(2,"0");
+
+const s =
+String(now.getSeconds()).padStart(2,"0");
 
 document
 .getElementById("clock")
-.textContent=time;
+.textContent =
+`${h}:${m}:${s}`;
 
 }
 
 updateClock();
-setInterval(updateClock,1000);
 
-/* 粒子 */
+setInterval(
+updateClock,
+1000
+);
 
-for(let i=0;i<80;i++){
+/* ====================
+PARTICLES
+==================== */
 
-const p=
+for(let i=0;i<40;i++){
+
+const p =
 document.createElement("div");
 
-p.className=
+p.className =
 "particle";
 
-p.style.left=
+p.style.left =
 Math.random()*100+"vw";
 
-p.style.top=
+p.style.top =
 Math.random()*100+"vh";
-
-p.style.animationDuration=
-(5+Math.random()*10)+"s";
 
 document.body.appendChild(p);
 
 }
 
-/* 起動シーケンス */
-
-const bootText=
-document.getElementById(
-"bootText"
-);
-
-const bootScreen=
-document.getElementById(
-"bootScreen"
-);
-
-const mainUI=
-document.getElementById(
-"mainUI"
-);
-
-setTimeout(()=>{
-
-bootText.textContent=
-"INITIALIZING...";
-
-},1500);
-
-setTimeout(()=>{
-
-bootText.textContent=
-"SYSTEM CHECK...";
-
-},3000);
-
-setTimeout(()=>{
-
-bootText.textContent=
-"ORION ONLINE";
-
-},4500);
-
-setTimeout(()=>{
-
-bootScreen.style.display=
-"none";
-
-mainUI.style.display=
-"block";
+/* ====================
+STARTUP
+==================== */
 
 document
 .querySelector(".core")
@@ -684,7 +748,17 @@ document
 "core-online"
 );
 
-setTimeout(()=>{
+document
+.querySelector(".ring1")
+.classList.add(
+"ring-online"
+);
+
+document
+.querySelector(".ring2")
+.classList.add(
+"ring-online"
+);
 
 document
 .querySelector(".ring3")
@@ -692,121 +766,115 @@ document
 "ring-online"
 );
 
-},300);
+/* ====================
+AI CHAT
+==================== */
+
+async function askAI(){
+
+const input =
+document.getElementById(
+"userInput"
+);
+
+const panel =
+document.getElementById(
+"chatPanel"
+);
+
+const text =
+input.value.trim();
+
+if(!text) return;
+
+/* USER */
+
+panel.innerHTML += `
+
+<div class="message you">
+KAIYA >
+${text}
+</div>
+
+`;
+
+input.value = "";
+
+/* ORION */
+
+panel.innerHTML += `
+
+<div id="typing"
+class="message orion typing">
+
+ORION >
+応答生成中...
+
+</div>
+
+`;
+
+panel.scrollTop =
+panel.scrollHeight;
+
+/* =====================================
+ここにAI接続を入れる
+===================================== */
+
+/*
+将来ここへ
+
+const response =
+await fetch(...)
+
+を追加
+
+*/
 
 setTimeout(()=>{
 
 document
-.querySelector(".ring2")
-.classList.add(
-"ring-online"
-);
+.getElementById(
+"typing"
+)
+.remove();
 
-},800);
+panel.innerHTML += `
 
-setTimeout(()=>{
+<div class="message orion">
 
-document
-.querySelector(".ring1")
-.classList.add(
-"ring-online"
-);
+ORION >
 
-},1300);
+現在はスタンドアロンモードです。
 
-},6000);
+AI接続ポイントは
+準備済みです。
 
-/* 音量反応 */
+</div>
 
-navigator
-.mediaDevices
-.getUserMedia({
-audio:true
-})
-.then(stream=>{
+`;
 
-const audioContext=
-new AudioContext();
+panel.scrollTop =
+panel.scrollHeight;
 
-const analyser=
-audioContext.createAnalyser();
-
-const source=
-audioContext
-.createMediaStreamSource(
-stream
-);
-
-source.connect(
-analyser
-);
-
-analyser.fftSize=256;
-
-const data=
-new Uint8Array(
-analyser.frequencyBinCount
-);
-
-function audioLoop(){
-
-requestAnimationFrame(
-audioLoop
-);
-
-analyser
-.getByteFrequencyData(
-data
-);
-
-let volume=0;
-
-for(
-let i=0;
-i<data.length;
-i++
-){
-volume+=data[i];
-}
-
-volume=
-volume/data.length;
-
-const glow=
-10+volume*0.6;
-
-document
-.querySelector(".ring1")
-.style.boxShadow=
-`0 0 ${glow}px #00d4ff,
-0 0 ${glow*2}px #00d4ff`;
-
-document
-.querySelector(".ring2")
-.style.boxShadow=
-`0 0 ${glow}px #00d4ff,
-0 0 ${glow*1.5}px #00d4ff`;
-
-document
-.querySelector(".core")
-.style.boxShadow=
-`0 0 ${glow}px #00d4ff,
-0 0 ${glow*3}px #00d4ff,
-0 0 ${glow*5}px rgba(0,212,255,.8)`;
+},1000);
 
 }
 
-audioLoop();
+document
+.getElementById("userInput")
+.addEventListener(
+"keydown",
+e=>{
 
-})
-.catch(error=>{
+if(e.key==="Enter"){
 
-console.log(
-"Microphone Error",
-error
+askAI();
+
+}
+
+}
 );
-
-});
 
 </script>
 
