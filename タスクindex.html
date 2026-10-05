@@ -1,324 +1,921 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Task Core</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,
+initial-scale=1.0">
+
+<title>ORION V6</title>
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI",sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
+html,
 body{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
 
-    background:
-    radial-gradient(circle at center,
-    #12315e 0%,
-    #081224 40%,
-    #030712 100%);
+width:100%;
+height:100%;
 
-    color:#d6f7ff;
+overflow:hidden;
+
+background:#000;
+
+font-family:
+Arial,sans-serif;
 }
 
-.container{
-    width:500px;
-    max-width:90%;
+#ui{
 
-    padding:25px;
+position:fixed;
+inset:0;
 
-    border:1px solid #00d4ff;
-
-    background:rgba(0,20,40,.55);
-
-    backdrop-filter:blur(10px);
-
-    border-radius:20px;
-
-    box-shadow:
-    0 0 15px #00d4ff,
-    inset 0 0 10px rgba(0,212,255,.2);
+width:100%;
+height:100%;
 }
 
-h1{
-    text-align:center;
-    margin-bottom:10px;
+canvas{
 
-    color:#00d4ff;
+position:absolute;
 
-    text-shadow:
-    0 0 10px #00d4ff,
-    0 0 20px #00d4ff;
+inset:0;
+
+width:100%;
+height:100%;
+}
+
+.clock{
+
+position:absolute;
+
+top:40px;
+
+width:100%;
+
+text-align:center;
+
+color:#00d4ff;
+
+font-size:30px;
+
+letter-spacing:5px;
 }
 
 .status{
-    text-align:center;
-    margin-bottom:20px;
-    color:#8cecff;
+
+position:absolute;
+
+top:85px;
+
+width:100%;
+
+text-align:center;
+
+color:#00d4ff;
+
+font-size:13px;
+
+letter-spacing:3px;
+}
+.chat-panel{
+
+position:absolute;
+
+left:50%;
+
+bottom:100px;
+
+transform:
+translateX(-50%);
+
+width:90%;
+
+max-width:500px;
+
+height:180px;
+
+overflow:auto;
+
+padding:10px;
+
+border:
+1px solid
+rgba(0,212,255,.3);
+
+background:
+rgba(0,20,40,.4);
+
+color:#00d4ff;
 }
 
 .input-area{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
+
+position:absolute;
+
+bottom:30px;
+
+left:50%;
+
+transform:
+translateX(-50%);
+
+display:flex;
+
+width:90%;
+
+max-width:500px;
+
+gap:10px;
 }
 
-input{
-    flex:1;
+.input-area input{
 
-    background:#04111f;
+flex:1;
 
-    border:1px solid #00d4ff;
+padding:12px;
 
-    color:white;
+font-size:16px;
 
-    padding:12px;
-    border-radius:10px;
+background:
+rgba(0,20,40,.8);
+
+border:
+1px solid #00d4ff;
+
+color:#00d4ff;
 }
 
-input:focus{
-    outline:none;
+.input-area button{
 
-    box-shadow:
-    0 0 10px #00d4ff;
+padding:12px;
+
+background:
+rgba(0,120,255,.3);
+
+border:
+1px solid #00d4ff;
+
+color:#00d4ff;
+}
+/* ====================
+PARTICLE CORE
+==================== */
+
+const canvas =
+document.getElementById(
+"coreCanvas"
+);
+
+const ctx =
+canvas.getContext("2d");
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+const cx =
+canvas.width / 2;
+
+const cy =
+canvas.height / 2;
+
+const sphereParticles =
+[];
+
+const outerParticles =
+[];
+
+const waveRings =
+[];
+
+let audioLevel = 0;
+
+/* ====================
+CORE PARTICLES
+==================== */
+
+for(let i=0;i<300;i++){
+
+sphereParticles.push({
+
+angle:
+Math.random()*Math.PI*2,
+
+radius:
+40 + Math.random()*40,
+
+size:
+Math.random()*3+1
+
+});
+
 }
 
-button{
-    padding:12px 18px;
+/* ====================
+OUTER PARTICLES
+==================== */
 
-    background:transparent;
+for(let i=0;i<80;i++){
 
-    border:1px solid #00d4ff;
+outerParticles.push({
 
-    color:#00d4ff;
+angle:
+Math.random()*Math.PI*2,
 
-    border-radius:10px;
+distance:
+180 + Math.random()*120,
 
-    cursor:pointer;
+speed:
+0.001 + Math.random()*0.003,
 
-    transition:.3s;
+size:
+Math.random()*2+1
+
+});
+
 }
 
-button:hover{
-    background:#00d4ff;
-    color:#000;
+/* ====================
+WAVES
+==================== */
+
+function createWave(){
+
+waveRings.push({
+
+radius:80,
+
+alpha:1
+
+});
+
 }
 
-ul{
-    list-style:none;
+setInterval(
+createWave,
+1000
+);
+
+/* ====================
+DRAW LOOP
+==================== */
+
+function drawCore(){
+
+requestAnimationFrame(
+drawCore
+);
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+const pulse =
+1 + audioLevel * 0.4;
+
+/* CORE */
+
+sphereParticles.forEach(p=>{
+
+const x =
+cx +
+Math.cos(p.angle)
+*
+p.radius
+*
+pulse;
+
+const y =
+cy +
+Math.sin(p.angle)
+*
+p.radius
+*
+pulse;
+
+ctx.beginPath();
+
+ctx.arc(
+
+x,
+y,
+
+p.size,
+
+0,
+
+Math.PI*2
+
+);
+
+ctx.fillStyle =
+"#00d4ff";
+
+ctx.shadowColor =
+"#00d4ff";
+
+ctx.shadowBlur =
+20;
+
+ctx.fill();
+
+});
+
+/* OUTER */
+
+outerParticles.forEach(p=>{
+
+p.angle += p.speed;
+
+const x =
+cx +
+Math.cos(p.angle)
+*
+p.distance;
+
+const y =
+cy +
+Math.sin(p.angle)
+*
+p.distance;
+
+ctx.beginPath();
+
+ctx.arc(
+x,
+y,
+p.size,
+0,
+Math.PI*2
+);
+
+ctx.fillStyle =
+"#00d4ff";
+
+ctx.fill();
+
+});
+
+/* WAVES */
+
+for(
+let i =
+waveRings.length-1;
+
+i>=0;
+
+i--
+){
+
+const w =
+waveRings[i];
+
+w.radius +=
+2 +
+audioLevel*10;
+
+w.alpha -=
+0.01;
+
+ctx.beginPath();
+
+ctx.arc(
+cx,
+cy,
+w.radius,
+0,
+Math.PI*2
+);
+
+ctx.strokeStyle =
+
+`rgba(
+0,
+212,
+255,
+${w.alpha}
+)`;
+
+ctx.lineWidth = 2;
+
+ctx.stroke();
+
+if(w.alpha <=0){
+
+waveRings.splice(
+i,
+1
+);
+
 }
 
-li{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:12px;
-
-    margin-bottom:10px;
-
-    background:rgba(255,255,255,.04);
-
-    border-left:4px solid #00d4ff;
-
-    border-radius:8px;
-
-    animation:fadeIn .3s ease;
 }
 
-.task-left{
-    display:flex;
-    align-items:center;
-    gap:10px;
 }
 
-.completed{
-    text-decoration:line-through;
-    opacity:.5;
+drawCore();
+/* ====================
+MIC INPUT
+==================== */
+
+navigator.mediaDevices
+
+.getUserMedia({
+
+audio:true
+
+})
+
+.then(stream=>{
+
+const audioContext =
+
+new (
+window.AudioContext ||
+window.webkitAudioContext
+)();
+
+const analyser =
+audioContext.createAnalyser();
+
+const source =
+audioContext
+.createMediaStreamSource(
+stream
+);
+
+source.connect(
+analyser
+);
+
+analyser.fftSize =
+256;
+
+const dataArray =
+
+new Uint8Array(
+
+analyser.frequencyBinCount
+
+);
+
+function updateAudio(){
+
+requestAnimationFrame(
+updateAudio
+);
+
+analyser
+.getByteFrequencyData(
+dataArray
+);
+
+let sum = 0;
+
+for(
+let i=0;
+i<dataArray.length;
+i++
+){
+
+sum += dataArray[i];
+
 }
 
-.delete-btn{
-    border-color:#ff4d6d;
-    color:#ff4d6d;
+audioLevel =
+(
+sum /
+dataArray.length
+)
+/
+255;
+
 }
 
-.delete-btn:hover{
-    background:#ff4d6d;
-    color:white;
+updateAudio();
+
+})
+
+.catch(err=>{
+
+console.log(
+"MIC ERROR",
+err
+);
+
+});
+
+/* ====================
+PARTICLE MOTION
+==================== */
+
+setInterval(()=>{
+
+if(audioLevel > 0.05){
+
+waveRings.push({
+
+radius:80,
+
+alpha:
+0.8 + audioLevel
+
+});
+
 }
 
-.progress{
-    margin-bottom:20px;
-    text-align:center;
-    color:#00d4ff;
+},100);
+
+/* ====================
+OUTER REACTION
+==================== */
+
+function reactOuterParticles(){
+
+outerParticles.forEach(
+p=>{
+
+p.distance +=
+
+Math.sin(
+
+Date.now()/300
+
++
+
+p.angle
+
+)
+
+*
+
+audioLevel
+
+*
+
+8;
+
 }
 
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(10px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+);
+
 }
+
+setInterval(
+reactOuterParticles,
+16
+);
+/* ====================
+CHAT HISTORY
+==================== */
+
+const messages = [
+
+{
+role:"orion",
+
+text:
+"こんにちは、開哉。"
+}
+
+];
+
+/* ====================
+CHAT RENDER
+==================== */
+
+function renderMessages(){
+
+const panel =
+document.getElementById(
+"chatPanel"
+);
+
+panel.innerHTML = "";
+
+messages.forEach(msg=>{
+
+const div =
+document.createElement("div");
+
+div.className =
+`message ${msg.role}`;
+
+if(
+msg.role === "user"
+){
+
+div.innerHTML =
+`KAIYA > ${msg.text}`;
+
+}
+else{
+
+div.innerHTML =
+`ORION > ${msg.text}`;
+
+}
+
+panel.appendChild(div);
+
+});
+
+panel.scrollTop =
+panel.scrollHeight;
+
+}
+
+/* ====================
+SEND MESSAGE
+==================== */
+
+async function askAI(){
+
+const input =
+document.getElementById(
+"userInput"
+);
+
+const text =
+input.value.trim();
+
+if(!text) return;
+
+/* USER */
+
+messages.push({
+
+role:"user",
+
+text
+
+});
+
+renderMessages();
+
+input.value = "";
+
+/* ORION */
+
+messages.push({
+
+role:"orion",
+
+text:"応答生成中..."
+
+});
+
+renderMessages();
+
+/* GEMINI */
+
+try{
+
+const response =
+await fetch(
+
+"https://YOUR-WORKER.workers.dev",
+
+{
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:JSON.stringify({
+
+message:text
+
+})
+
+}
+
+);
+
+const data =
+await response.json();
+
+messages.pop();
+
+messages.push({
+
+role:"orion",
+
+text:data.reply
+
+});
+
+}
+catch(err){
+
+messages.pop();
+
+messages.push({
+
+role:"orion",
+
+text:
+"通信エラー"
+
+});
+
+}
+
+renderMessages();
+
+}
+
+/* ====================
+ENTER KEY
+==================== */
+
+document
+
+.getElementById(
+"userInput"
+)
+
+.addEventListener(
+
+"keydown",
+
+e=>{
+
+if(
+e.key === "Enter"
+){
+
+askAI();
+
+}
+
+}
+
+);
+
+/* ====================
+ORION PERSONALITY
+==================== */
+
+/*
+
+Cloudflare Worker側へ
+
+送る人格
+
+--------------------------------
+
+あなたはORIONです。
+
+ユーザー名は開哉です。
+
+未来的なAIです。
+
+親しい相棒として
+振る舞います。
+
+簡潔に回答します。
+
+--------------------------------
+
+*/
 </style>
+
 </head>
+
 <body>
 
-<div class="container">
+<div id="ui">
 
-    <h1>TASK CORE</h1>
+<canvas id="coreCanvas"></canvas>
 
-    <div class="status">SYSTEM ONLINE</div>
+<div class="clock" id="clock">
+00:00:00
+</div>
 
-    <div class="progress" id="progress">
-        Progress : 0%
-    </div>
+<div class="status">
+ORION PARTICLE INTELLIGENCE CORE
+</div>
 
-    <div class="input-area">
-        <input
-        type="text"
-        id="taskInput"
-        placeholder="タスクを入力">
-        <button onclick="addTask()">
-            ADD
-        </button>
-    </div>
+<div
+id="chatPanel"
+class="chat-panel">
+</div>
 
-    <ul id="taskList"></ul>
+<div class="input-area">
+
+<input
+id="userInput"
+type="text"
+placeholder="ORIONへ入力..."
+>
+
+<button onclick="askAI()">
+送信
+</button>
+
+</div>
 
 </div>
 
 <script>
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+/* ====================
+CLOCK
+==================== */
 
-function saveTasks(){
-    localStorage.setItem(
-        "tasks",
-        JSON.stringify(tasks)
-    );
-}
+function updateClock(){
 
-function updateProgress(){
+const now = new Date();
 
-    if(tasks.length === 0){
-        document.getElementById("progress").textContent =
-        "Progress : 0%";
-        return;
-    }
+const h =
+String(
+now.getHours()
+).padStart(2,"0");
 
-    const completed =
-    tasks.filter(task => task.completed).length;
+const m =
+String(
+now.getMinutes()
+).padStart(2,"0");
 
-    const percent =
-    Math.round((completed / tasks.length) * 100);
-
-    document.getElementById("progress").textContent =
-    `Progress : ${percent}%`;
-}
-
-function renderTasks(){
-
-    const taskList =
-    document.getElementById("taskList");
-
-    taskList.innerHTML = "";
-
-    tasks.forEach((task,index)=>{
-
-        const li =
-        document.createElement("li");
-
-        li.innerHTML =
-        `
-        <div class="task-left">
-
-            <input
-            type="checkbox"
-            ${task.completed ? "checked" : ""}
-            onchange="toggleTask(${index})">
-
-            <span class="${
-                task.completed ? "completed" : ""
-            }">
-                ${task.text}
-            </span>
-
-        </div>
-
-        <button
-        class="delete-btn"
-        onclick="deleteTask(${index})">
-            DELETE
-        </button>
-        `;
-
-        taskList.appendChild(li);
-    });
-
-    updateProgress();
-}
-
-function addTask(){
-
-    const input =
-    document.getElementById("taskInput");
-
-    const text =
-    input.value.trim();
-
-    if(text === "") return;
-
-    tasks.push({
-        text:text,
-        completed:false
-    });
-
-    saveTasks();
-    renderTasks();
-
-    input.value = "";
-}
-
-function toggleTask(index){
-
-    tasks[index].completed =
-    !tasks[index].completed;
-
-    saveTasks();
-    renderTasks();
-}
-
-function deleteTask(index){
-
-    tasks.splice(index,1);
-
-    saveTasks();
-    renderTasks();
-}
+const s =
+String(
+now.getSeconds()
+).padStart(2,"0");
 
 document
-.getElementById("taskInput")
-.addEventListener("keypress",(e)=>{
+.getElementById("clock")
+.textContent =
 
-    if(e.key==="Enter"){
-        addTask();
-    }
+`${h}:${m}:${s}`;
 
-});
+}
 
-renderTasks();
+updateClock();
+
+setInterval(
+updateClock,
+1000
+);
+
+/* ====================
+RESIZE
+==================== */
+
+window
+.addEventListener(
+"resize",
+()=>{
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+}
+
+);
+
+/* ====================
+CHAT BOOT
+==================== */
+
+renderMessages();
+
+/* ====================
+INPUT FOCUS
+==================== */
+
+document
+.getElementById(
+"userInput"
+)
+.focus();
+
+/* ====================
+START
+==================== */
+
+console.log(
+"ORION CORE ONLINE"
+);
 
 </script>
 
