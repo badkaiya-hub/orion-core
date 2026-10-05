@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
 
 <meta charset="UTF-8">
 
 <meta
 name="viewport"
-content="width=device-width,
-initial-scale=1.0">
+content="width=device-width,initial-scale=1.0">
 
-<title>ORION CORE</title>
+<title>ORION DEBUG</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
 html,
 body{
+
+margin:0;
+padding:0;
 
 width:100%;
 height:100%;
@@ -29,199 +24,25 @@ height:100%;
 overflow:hidden;
 
 background:#000;
-
-font-family:
-Arial,sans-serif;
-}
-
-#ui{
-
-position:relative;
-
-width:100vw;
-height:100vh;
 }
 
 canvas{
 
-position:absolute;
-
-inset:0;
-
 width:100%;
 height:100%;
+
+display:block;
 }
 
-/* CLOCK */
-
-.clock{
-
-position:absolute;
-
-top:50px;
-
-width:100%;
-
-text-align:center;
-
-font-size:34px;
-
-color:#00d4ff;
-
-letter-spacing:4px;
-
-text-shadow:
-0 0 15px #00d4ff;
-}
-
-/* STATUS */
-
-.status{
-
-position:absolute;
-
-top:100px;
-
-width:100%;
-
-text-align:center;
-
-font-size:14px;
-
-letter-spacing:4px;
-
-color:#00d4ff;
-}
-
-/* CHAT */
-
-.chat-panel{
-
-position:absolute;
-
-left:50%;
-
-bottom:120px;
-
-transform:
-translateX(-50%);
-
-width:90%;
-
-height:180px;
-
-border:
-1px solid rgba(0,212,255,.4);
-
-background:
-rgba(0,10,20,.6);
-
-backdrop-filter:
-blur(10px);
-
-overflow:auto;
-
-padding:12px;
-
-color:#00d4ff;
-}
-
-/* INPUT */
-
-.input-area{
-
-position:absolute;
-
-left:50%;
-
-bottom:30px;
-
-transform:
-translateX(-50%);
-
-width:90%;
-
-display:flex;
-
-gap:10px;
-}
-
-.input-area input{
-
-flex:1;
-
-padding:14px;
-
-font-size:16px;
-
-background:#001018;
-
-border:
-1px solid #00d4ff;
-
-color:#00d4ff;
-}
-
-.input-area button{
-
-padding:14px;
-
-background:#00243a;
-
-border:
-1px solid #00d4ff;
-
-color:#00d4ff;
-}
-
-.message{
-
-margin-bottom:10px;
-}
 </style>
 
 </head>
 
 <body>
 
-<div id="ui">
-
 <canvas id="coreCanvas"></canvas>
 
-<div class="clock" id="clock">
-00:00:00
-</div>
-
-<div class="status">
-ORION PARTICLE INTELLIGENCE CORE
-</div>
-
-<div
-id="chatPanel"
-class="chat-panel">
-</div>
-
-<div class="input-area">
-
-<input
-id="userInput"
-type="text"
-placeholder="ORIONへ入力..."
->
-
-<button>
-送信
-</button>
-
-</div>
-
-</div>
-
 <script>
-
-/* ====================
-CANVAS
-==================== */
 
 const canvas =
 document.getElementById(
@@ -231,7 +52,7 @@ document.getElementById(
 const ctx =
 canvas.getContext("2d");
 
-function resizeCanvas(){
+function resize(){
 
 canvas.width =
 window.innerWidth;
@@ -241,132 +62,14 @@ window.innerHeight;
 
 }
 
-resizeCanvas();
+resize();
 
 window.addEventListener(
 "resize",
-resizeCanvas
+resize
 );
-
-/* ====================
-CENTER
-==================== */
-
-function centerX(){
-
-return canvas.width / 2;
-
-}
-
-function centerY(){
-
-return canvas.height / 2 - 80;
-
-}
-
-/* ====================
-AUDIO LEVEL
-==================== */
-
-let audioLevel = 0;
-
-/* ====================
-CORE PARTICLES
-==================== */
-
-const coreParticles =
-[];
-
-for(
-let i=0;
-i<250;
-i++
-){
-
-coreParticles.push({
-
-angle:
-Math.random() *
-Math.PI * 2,
-
-radius:
-30 +
-Math.random()*40,
-
-size:
-1 +
-Math.random()*2
-
-});
-
-}
-
-/* ====================
-OUTER PARTICLES
-==================== */
-
-const outerParticles =
-[];
-
-for(
-let i=0;
-i<80;
-i++
-){
-
-outerParticles.push({
-
-angle:
-Math.random() *
-Math.PI * 2,
-
-distance:
-140 +
-Math.random()*120,
-
-speed:
-0.002 +
-Math.random()*0.003,
-
-size:
-1 +
-Math.random()*2
-
-});
-
-}
-
-/* ====================
-WAVES
-==================== */
-
-const waves = [];
-
-function createWave(){
-
-waves.push({
-
-radius:60,
-
-alpha:1
-
-});
-
-}
-
-setInterval(
-createWave,
-1200
-);
-/* ====================
-DRAW LOOP
-==================== */
 
 function draw(){
-
-requestAnimationFrame(
-draw
-);
 
 ctx.clearRect(
 0,
@@ -376,63 +79,19 @@ canvas.height
 );
 
 const cx =
-centerX();
+canvas.width / 2;
 
 const cy =
-centerY();
-
-const pulse =
-1 + (audioLevel * 0.6);
-
-/* ====================
-CORE SPHERE
-==================== */
-
-coreParticles.forEach(p=>{
-
-const x =
-cx +
-
-Math.cos(
-p.angle
-)
-
-*
-
-p.radius
-
-*
-
-pulse;
-
-const y =
-cy +
-
-Math.sin(
-p.angle
-)
-
-*
-
-p.radius
-
-*
-
-pulse;
+canvas.height / 2;
 
 ctx.beginPath();
 
 ctx.arc(
-
-x,
-y,
-
-p.size,
-
+cx,
+cy,
+80,
 0,
-
 Math.PI * 2
-
 );
 
 ctx.fillStyle =
@@ -442,480 +101,19 @@ ctx.shadowColor =
 "#00d4ff";
 
 ctx.shadowBlur =
-16;
+30;
 
 ctx.fill();
-
-});
-
-/* ====================
-OUTER PARTICLES
-==================== */
-
-outerParticles.forEach(p=>{
-
-p.angle +=
-p.speed;
-
-const x =
-cx +
-
-Math.cos(
-p.angle
-)
-
-*
-
-p.distance;
-
-const y =
-cy +
-
-Math.sin(
-p.angle
-)
-
-*
-
-p.distance;
-
-ctx.beginPath();
-
-ctx.arc(
-
-x,
-y,
-
-p.size,
-
-0,
-
-Math.PI*2
-
-);
-
-ctx.fillStyle =
-"rgba(0,212,255,.8)";
-
-ctx.shadowBlur =
-10;
-
-ctx.fill();
-
-});
-
-/* ====================
-WAVES
-==================== */
-
-for(
-
-let i =
-waves.length - 1;
-
-i >= 0;
-
-i--
-
-){
-
-const w =
-waves[i];
-
-w.radius +=
-
-2 +
-
-(audioLevel * 10);
-
-w.alpha -=
-0.01;
-
-ctx.beginPath();
-
-ctx.arc(
-
-cx,
-cy,
-
-w.radius,
-
-0,
-
-Math.PI * 2
-
-);
-
-ctx.strokeStyle =
-
-`rgba(
-0,
-212,
-255,
-${w.alpha}
-)`;
-
-ctx.lineWidth = 2;
-
-ctx.stroke();
-
-if(
-w.alpha <= 0
-){
-
-waves.splice(
-i,
-1
-);
-
-}
-
-}
-
-}
-
-/* ====================
-START
-==================== */
-
-draw();
-/* ====================
-MIC INPUT
-==================== */
-
-navigator.mediaDevices
-
-.getUserMedia({
-audio:true
-})
-
-.then(stream=>{
-
-const audioContext =
-
-new (
-window.AudioContext ||
-window.webkitAudioContext
-)();
-
-const analyser =
-audioContext.createAnalyser();
-
-const source =
-audioContext
-.createMediaStreamSource(
-stream
-);
-
-source.connect(
-analyser
-);
-
-analyser.fftSize = 256;
-
-const bufferLength =
-analyser.frequencyBinCount;
-
-const dataArray =
-new Uint8Array(
-bufferLength
-);
-
-function updateAudio(){
 
 requestAnimationFrame(
-updateAudio
-);
-
-analyser
-.getByteFrequencyData(
-dataArray
-);
-
-let sum = 0;
-
-for(
-let i=0;
-i<bufferLength;
-i++
-){
-
-sum += dataArray[i];
-
-}
-
-audioLevel =
-
-(
-sum /
-bufferLength
-)
-/
-255;
-
-}
-
-updateAudio();
-
-})
-
-.catch(err=>{
-
-console.log(
-"MIC ERROR",
-err
-);
-
-});
-
-/* ====================
-AUDIO WAVES
-==================== */
-
-setInterval(()=>{
-
-if(
-audioLevel > 0.03
-){
-
-waves.push({
-
-radius:60,
-
-alpha:
-0.8 + audioLevel
-
-});
-
-}
-
-},120);
-
-/* ====================
-OUTER MOTION
-==================== */
-
-function updateOuter(){
-
-outerParticles.forEach(
-p=>{
-
-p.distance +=
-
-Math.sin(
-
-Date.now()/500 +
-
-p.angle
-
-)
-
-*
-
-audioLevel
-
-*
-
-12;
-
-}
-
+draw
 );
 
 }
 
-setInterval(
-updateOuter,
-16
-);
-/* ====================
-CLOCK
-==================== */
-
-function updateClock(){
-
-const now = new Date();
-
-const h =
-String(
-now.getHours()
-).padStart(2,"0");
-
-const m =
-String(
-now.getMinutes()
-).padStart(2,"0");
-
-const s =
-String(
-now.getSeconds()
-).padStart(2,"0");
-
-document
-.getElementById(
-"clock"
-)
-.textContent =
-
-`${h}:${m}:${s}`;
-
-}
-
-updateClock();
-
-setInterval(
-updateClock,
-1000
-);
-
-/* ====================
-CHAT
-==================== */
-
-const messages = [
-
-{
-role:"orion",
-text:"こんにちは、開哉。"
-},
-
-{
-role:"orion",
-text:"ORION CORE ONLINE"
-}
-
-];
-
-function renderMessages(){
-
-const panel =
-document.getElementById(
-"chatPanel"
-);
-
-panel.innerHTML = "";
-
-messages.forEach(msg=>{
-
-const div =
-document.createElement(
-"div"
-);
-
-div.className =
-"message";
-
-if(
-msg.role === "user"
-){
-
-div.innerHTML =
-
-`KAIYA ＞
-${msg.text}`;
-
-}
-else{
-
-div.innerHTML =
-
-`ORION ＞
-${msg.text}`;
-
-}
-
-panel.appendChild(
-div
-);
-
-});
-
-panel.scrollTop =
-panel.scrollHeight;
-
-}
-
-/* ====================
-SEND
-==================== */
-
-function askAI(){
-
-const input =
-document.getElementById(
-"userInput"
-);
-
-const text =
-input.value.trim();
-
-if(!text){
-return;
-}
-
-messages.push({
-
-role:"user",
-
-text
-
-});
-
-messages.push({
-
-role:"orion",
-
-text:
-"Gemini接続待機中..."
-
-});
-
-renderMessages();
-
-input.value = "";
-
-}
-
-/* ====================
-ENTER
-==================== */
-
-document
-
-.getElementById(
-"userInput"
-)
-
-.addEventListener(
-
-"keydown",
-
-e=>{
-
-if(
-e.key === "Enter"
-){
-
-askAI();
-
-}
-
-}
-
-);
-
-/* ====================
-STARTUP
-==================== */
-
-renderMessages();
-
-console.log(
-"ORION ONLINE"
-);
+draw();
 
 </script>
 
 </body>
-
 </html>
